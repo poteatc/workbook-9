@@ -40,4 +40,46 @@ public class SimpleProductDao implements ProductDao {
     public List<Product> getAll() {
         return products;
     }
+
+    @Override
+    public void deleteProductById(int id) {
+        boolean found = false;
+        Product productToDelete = null;
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getProductId() == id) {
+                productToDelete = products.get(i);
+                products.remove(products.get(i));
+                found = true;
+            }
+        }
+        if (found) {
+            System.out.println("Successfully removed: " + productToDelete);
+        } else {
+            System.out.println("There is no product with that ID... ");
+        }
+    }
+
+    @Override
+    public void updateProduct(Product p, String name, String category, double price) {
+        p.setName(name);
+        p.setCategory(category);
+        p.setPrice(price);
+    }
+
+    @Override
+    public Product searchProductById(int id) {
+        boolean found = false;
+        Product product = null;
+        for (Product p : products) {
+            if (p.getProductId() == id) {
+                product = p;
+                found = true;
+            }
+        }
+        if (found) {
+            return product;
+        } else {
+            return null;
+        }
+    }
 }

@@ -23,25 +23,71 @@ public class UserInterface {
             System.out.print("""
                 1. List products
                 2. Add product
-                3. Exit
+                3. Delete product by ID
+                4. Update product by ID
+                5. Search product by ID
+                6. Exit
                 Please choose an option: 
                 """);
             int choice = scanner.nextInt();
             scanner.nextLine();
 
-            if (choice < 1 || choice > 3) {
+            if (choice < 1 || choice > 6) {
                 System.out.println("Invalid input... please try again!");
             } else {
                 switch (choice) {
                     case 1 -> simpleProductDao.getAll().forEach(System.out::println);
                     case 2 -> addProduct(scanner);
-                    case 3 -> {
+                    case 3 -> deleteProduct(scanner);
+                    case 4 -> updateProduct(scanner);
+                    case 5 -> searchProduct(scanner);
+                    case 6 -> {
                         System.out.println("Exiting application...");
                         choosing = false;
                     }
                 }
             }
         }
+    }
+
+    private void searchProduct(Scanner scanner) {
+        System.out.println("Enter a product ID (int): ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        Product p = simpleProductDao.searchProductById(id);
+        if (p != null) {
+            System.out.println("Found product: " + p);
+        } else {
+            System.out.println("There is no product with that ID... ");
+        }
+    }
+
+    private void updateProduct(Scanner scanner) {
+        System.out.println("Enter a product ID (int): ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        Product productToUpdate = simpleProductDao.searchProductById(id);
+        if (productToUpdate != null) {
+            System.out.println("Enter a new name (String): ");
+            String name = scanner.nextLine().trim();
+            System.out.println("Enter a new category (String: ");
+            String category = scanner.nextLine().trim();
+            System.out.println("Enter a new price (double): ");
+            double price = scanner.nextDouble();
+            scanner.nextLine();
+
+            simpleProductDao.updateProduct(productToUpdate, name, category, price);
+        }
+    }
+
+    private void deleteProduct(Scanner scanner) {
+        System.out.println("Enter a product ID (int): ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        simpleProductDao.deleteProductById(id);
     }
 
     private void addProduct(Scanner scanner) {
