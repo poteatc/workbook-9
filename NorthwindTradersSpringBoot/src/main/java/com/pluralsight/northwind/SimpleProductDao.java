@@ -14,7 +14,7 @@ import java.util.List;
 // The default scope for the object is singleton. Which means that
 // it will be available for the duration of the application
 
-@Component
+//@Component
 public class SimpleProductDao implements ProductDao {
 
     private final List<Product> products;

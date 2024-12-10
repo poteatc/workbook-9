@@ -7,7 +7,7 @@ import java.util.List;
 
 @Component
 public class ProductService {
-    private final SimpleProductDao simpleProductDao;
+    private final ProductDao productDao;
 
     // Autowired tells Spring to automatically inject a
     // object into this constructor when a RegistrationService
@@ -15,15 +15,15 @@ public class ProductService {
     // When there’s only one constructor with args, @autowired
     // is optional
     @Autowired
-    public ProductService(SimpleProductDao simpleProductDao) {
-        this.simpleProductDao = simpleProductDao;
+    public ProductService(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     public List<Product> getAllProducts() {
-        return simpleProductDao.getAll();
+        return productDao.getAll();
     }
 
     public void addProduct(Product product) {
-        simpleProductDao.add(product);
+        productDao.add(product);
     }
 }

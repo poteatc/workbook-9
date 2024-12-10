@@ -1,6 +1,7 @@
 package com.pluralsight.northwind;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 public class UserInterface {
 
     @Autowired
-    private SimpleProductDao simpleProductDao;
+    private ProductDao productDao;
 
     public UserInterface() {
 
@@ -36,7 +37,7 @@ public class UserInterface {
                 System.out.println("Invalid input... please try again!");
             } else {
                 switch (choice) {
-                    case 1 -> simpleProductDao.getAll().forEach(System.out::println);
+                    case 1 -> productDao.getAll().forEach(System.out::println);
                     case 2 -> addProduct(scanner);
                     case 3 -> deleteProduct(scanner);
                     case 4 -> updateProduct(scanner);
@@ -55,7 +56,7 @@ public class UserInterface {
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        Product p = simpleProductDao.searchProductById(id);
+        Product p = productDao.searchProductById(id);
         if (p != null) {
             System.out.println("Found product: " + p);
         } else {
@@ -68,7 +69,7 @@ public class UserInterface {
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        Product productToUpdate = simpleProductDao.searchProductById(id);
+        Product productToUpdate = productDao.searchProductById(id);
         if (productToUpdate != null) {
             System.out.println("Enter a new name (String): ");
             String name = scanner.nextLine().trim();
@@ -78,7 +79,7 @@ public class UserInterface {
             double price = scanner.nextDouble();
             scanner.nextLine();
 
-            simpleProductDao.updateProduct(productToUpdate, name, category, price);
+            productDao.updateProduct(productToUpdate, name, category, price);
         }
     }
 
@@ -87,7 +88,7 @@ public class UserInterface {
         int id = scanner.nextInt();
         scanner.nextLine();
 
-        simpleProductDao.deleteProductById(id);
+        productDao.deleteProductById(id);
     }
 
     private void addProduct(Scanner scanner) {
@@ -105,6 +106,6 @@ public class UserInterface {
         double price = scanner.nextDouble();
         scanner.nextLine();
 
-        simpleProductDao.add(new Product(id, name, category, price));
+        productDao.add(new Product(id, name, category, price));
     }
 }
