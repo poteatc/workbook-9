@@ -59,7 +59,12 @@ public class ProductsController {
             @RequestBody Product product
     ) {
         Product newProduct = productDao.insert(product);
-
         return newProduct;
+    }
+
+    @PutMapping("/products/{id}")
+    public void updateProduct(@PathVariable int id,
+                              @RequestBody Product product) {
+        productDao.udpate(id, product);
     }
 }

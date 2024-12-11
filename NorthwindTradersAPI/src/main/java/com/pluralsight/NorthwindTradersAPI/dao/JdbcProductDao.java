@@ -103,4 +103,31 @@ public class JdbcProductDao implements ProductDao {
         }
         return null;
     }
+
+    @Override
+    public void udpate(int id, Product product) {
+        String before = "SET FOREIGN_KEY_CHECKS = 0";
+        String query = """
+                UPDATE products
+                SET ProductName = ?, CategoryID = ?, UnitPrice = ?
+                WHERE ProductID = ?
+                """;
+        String after = "SET FOREIGN_KEY_CHECKS = 1";
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(before);
+            preparedStatement.execute();
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, product.getProductName());
+            preparedStatement.setInt(2, product.getCategoryId());
+            preparedStatement.setDouble(3, product.getUnitPrice());
+            preparedStatement.setInt(4, id);
+            int rows = preparedStatement.executeUpdate();
+            System.out.println(rows + " row(s) updated");
+
+            preparedStatement = connection.prepareStatement(after);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
