@@ -71,12 +71,6 @@ public class JdbcProductDao implements ProductDao {
 
     @Override
     public Product insert(Product product) {
-        /*
-            private int productId;
-    private String productName;
-    private int categoryId;
-    private double unitPrice;
-         */
         String insert = """
                 INSERT INTO products (ProductName, UnitPrice)
                 VALUES (?, ?)
@@ -104,12 +98,6 @@ public class JdbcProductDao implements ProductDao {
                 double unitPrice = rs.getDouble("UnitPrice");
                 return new Product(productID, productName, categoryID, unitPrice);
             }
-            //            while (rs.next()) {
-//                String productName = rs.getString("ProductName");
-//                int categoryID = rs.getInt("CategoryID");
-//                double unitPrice = rs.getDouble("UnitPrice");
-//                return new Product(productName, categoryID, unitPrice);
-//            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -6,10 +6,7 @@ import com.pluralsight.NorthwindTradersAPI.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +19,6 @@ public class CategoriesController {
     public CategoriesController(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
-
-   // List<Category> categories = new ArrayList<>();
-
-//    public CategoriesController() {
-//        categories.add(new Category(1, "Fruit"));
-//        categories.add(new Category(2, "Vegetable"));
-//        categories.add(new Category(3, "Meat"));
-//        categories.add(new Category(4, "Drink"));
-//    }
 
     @GetMapping("/categories")
     public List<Category> findAll() {
@@ -58,5 +46,14 @@ public class CategoriesController {
 
         // Return the filtered categories with 200 OK
         return ResponseEntity.ok(filteredCategories);
+    }
+
+    @PostMapping("/categories")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Category addCategory(
+            @RequestBody Category category
+    ) {
+        Category newCategory = categoryDao.insert(category);
+        return newCategory;
     }
 }
