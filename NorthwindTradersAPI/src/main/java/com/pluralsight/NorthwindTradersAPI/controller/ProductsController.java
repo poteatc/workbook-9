@@ -1,7 +1,10 @@
 package com.pluralsight.NorthwindTradersAPI.controller;
 
+import com.pluralsight.NorthwindTradersAPI.dao.CategoryDao;
+import com.pluralsight.NorthwindTradersAPI.dao.ProductDao;
 import com.pluralsight.NorthwindTradersAPI.model.Category;
 import com.pluralsight.NorthwindTradersAPI.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,28 +20,29 @@ import java.util.stream.Collectors;
 
 @RestController
 public class ProductsController {
-    List<Product> products = List.of(
-            new Product(1, "Apple", 1, 1.50),
-            new Product(2, "Green Beans", 2, 2.00),
-            new Product(3, "Turkey", 3, 4.99),
-            new Product(4, "Water", 4, .89)
-    );
+    private ProductDao productDao;
+
+    @Autowired
+    public ProductsController(ProductDao productDao) {
+        this.productDao = productDao;
+    }
 
     @GetMapping("/products")
     public List<Product> findAll() {
-        return products;
+        return productDao.getAll();
     }
 
     @GetMapping("/products/{id}")
     public Product findProductById(@PathVariable int id) {
-        return products.stream().findFirst().orElse(null);
+        return productDao.getById(id);
+        //return products.stream().findFirst().orElse(null);
     }
 
     @GetMapping("/products/filter")
     public ResponseEntity<?> filterByAttributes(@RequestParam(required = false) String name
                                             , @RequestParam(required = false) Integer categoryId
                                             , @RequestParam(required = false) Double price) {
-        List<Product> filteredProducts = products.stream()
+        List<Product> filteredProducts = findAll().stream()
                 .filter(product -> name == null || product.getProductName().equals(name))
                 .filter(product -> categoryId == null || product.getProductId() == categoryId)
                 .filter(product -> price == null || product.getUnitPrice() == price).toList();
