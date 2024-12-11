@@ -7,10 +7,7 @@ import com.pluralsight.NorthwindTradersAPI.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,5 +51,15 @@ public class ProductsController {
 
         // Return the filtered products with 200 OK
         return ResponseEntity.ok(filteredProducts);
+    }
+
+    @PostMapping("/products")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public Product addProduct(
+            @RequestBody Product product
+    ) {
+        Product newProduct = productDao.insert(product);
+
+        return newProduct;
     }
 }

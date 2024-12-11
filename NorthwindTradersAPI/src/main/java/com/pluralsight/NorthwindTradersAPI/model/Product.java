@@ -20,6 +20,11 @@ public class Product {
         this.unitPrice = 0;
     }
 
+    public Product(String productName, double unitPrice) {
+        this.productName = productName;
+        this.unitPrice = unitPrice;
+    }
+
     public int getProductId() {
         return productId;
     }
